@@ -1,0 +1,24 @@
+KOS in VM
+=========
+
+This project is for building and running KallistiOS in a VM inside a Windows
+computer or on Ubuntu. I did it because I was too stupid to get this working
+in Cygwin and wanted to learn how to do it from scratch. It might be
+informative if you're also wondering how to build KallistiOS.
+
+
+Building on Ubuntu / Lubuntu
+----------------------------
+
+Download and run "install_kos.sh".
+When it's ready, run "source ~/Tools/dreamcast/environ.sh"
+This was tested once in Lubuntu in 2012-12-26 which means by the time you read
+this it probably won't work.
+
+
+Building in Vagrant
+-------------------
+
+Execute "vagrant up", then "vagrant ssh" into the machine.
+Inside the VM, run "/vagrant/install_kos.sh", then
+"source ~/Tools/dreamcast/environ.sh".
