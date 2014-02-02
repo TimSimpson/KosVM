@@ -157,23 +157,7 @@ function windows_instructions() {
     2. Download the Cygwin installer, 'setup-x86.exe', to that directory.
     3. Open the Windows command prompt, then run
         > cd C:\KosTemp
-        > setup-x86.exe ^
-              --quiet-mode ^
-              --packages ^
-              gcc-core,^
-              gcc-g++,^
-              make,^
-              bison,^
-              flex,^
-              libelf0-devel,^
-              ELFIO,^
-              texinfo,^
-              git,^
-              wget,^
-              sed,^
-              lyx,^
-              patchutils,^
-              libiconv
+        > setup-x86.exe --quiet-mode --packages gcc-core,gcc-g++,make,bison,flex,libelf0-devel,ELFIO,texinfo,git,wget,sed,lyx,patch,patchutils,libiconv
 
     Once this is done, press enter to continue...
     "

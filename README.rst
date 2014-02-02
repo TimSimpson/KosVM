@@ -13,7 +13,7 @@ Windows Instructions
 
 .. code:: shell
 
-    setup-x86.exe --quiet-mode --packages gcc-core,gcc-g++,make,bison,flex,libelf0-devel,ELFIO,texinfo,git,wget,sed,lyx,patchutils,libiconv
+    setup-x86.exe --quiet-mode --packages gcc-core,gcc-g++,make,bison,flex,libelf0-devel,ELFIO,texinfo,git,wget,sed,lyx,patch,patchutils,libiconv
 
 If you haven't installed Cygwin yet, it may show you a GUI. Just click "next"
 for every option and the packages listed above should install. Just to be sure,
