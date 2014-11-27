@@ -18,8 +18,11 @@ function pkg_install() {
 function install_gcc_prerequisites() {
     sudo apt-get update
     # Thanks to kenws on #dreamcastdev for providing this list.
-    pkg_install gcc make bison flex   \
-         libelf-dev texinfo latex2html git wget sed lyx
+    # Not sure if libjpeg62-dev and libpng-dev are correct- they're recent
+    # additions since jpeg and png headers and dev libraries are now required.
+    pkg_install gcc-4.7 make bison flex   \
+         libelf-dev texinfo latex2html git wget sed lyx \
+         libjpeg62-dev libpng-dev
 }
 
 function download_kos_source() {
@@ -36,7 +39,7 @@ function prepare_gcc_source() {
     ./download.sh
     # Unzips it.
     ./unpack.sh
-    pushd gcc-4.8.2
+    pushd gcc-4.7.3
     # This next script downloads the current versions of mp, mpfr, and mpc.
     # If it fails, an alternative is to instal them via the package manager.
     ./contrib/download_prerequisites
