@@ -3,4 +3,4 @@ language: bash
 sudo: true
 
 script:
-  - bash ./install_kos.sh
+  - bash ./install_kos.sh > log.txt
