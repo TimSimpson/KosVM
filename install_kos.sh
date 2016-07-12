@@ -11,7 +11,7 @@ export DC_TOOLCHAIN_ROOT=$DC_ROOT/KallistiOS/utils/dc-chain
 
 
 function pkg_install() {
-    sudo -E DEBIAN_FRONTEND=noninteractive apt-get install $@
+    sudo -E DEBIAN_FRONTEND=noninteractive apt-get install -y $@
 }
 
 
@@ -31,15 +31,51 @@ function download_kos_source() {
     git clone git://cadcdev.git.sourceforge.net/gitroot/cadcdev/KallistiOS
     git clone --recursive git://cadcdev.git.sourceforge.net/gitroot/cadcdev/kos-ports kos-ports
     popd
+
+    # FUTURE
+    # # Replace GCC 4.7 with 5.2
+    # pushd /tmp
+    # git clone https://github.com/DC-SWAT/DreamShell.git
+    # cp -rf /tmp/DreamShell/sdk/toolchain/*  "${DC_TOOLCHAIN_ROOT}/"
+    # popd
 }
 
 function prepare_gcc_source() {
     pushd $DC_TOOLCHAIN_ROOT
+
+    # FUTURE:
+    # Ok, maybe use this?
+    # https://github.com/DC-SWAT/DreamShell/tree/master/sdk/toolchain
+
+
+    # Replace in download.sh
+
+    # export GCC_VER=4.7.3
+    # export BINUTILS_VER=2.23.2
+    # export NEWLIB_VER=2.0.0
+    # export GMP_VER=4.3.2
+    # export MPFR_VER=2.4.2
+    # export MPC_VER=0.8.1
+
+    # with
+
+    # export GCC_VER=5.2.0
+    # export BINUTILS_VER=2.25
+    # export NEWLIB_VER=2.2.0
+    # export GMP_VER=4.3.2
+    # export MPFR_VER=2.4.2
+    # export MPC_VER=0.8.1
+
+    # Ditto for unpack.sh
+    # END FUTURE
+
     # This downloads the GCC source code.
     ./download.sh
     # Unzips it.
     ./unpack.sh
     pushd gcc-4.7.3
+    # FUTURE pushd gcc-5.2.0
+
     # This next script downloads the current versions of mp, mpfr, and mpc.
     # If it fails, an alternative is to instal them via the package manager.
     ./contrib/download_prerequisites
@@ -56,8 +92,18 @@ function prepare_gcc_source() {
     mkdir -p /opt/toolchains/dc/sh-elf/sh-elf/include
     mkdir -p /opt/toolchains/dc/sh-elf/share
 
+
+
     # The last step uses the KOS provided make file to patch GCC to
     # work with the Dreamcast processors.
+
+    # FUTURE
+    # Have to change
+    #kos_base=/usr/local/dc/kos/kos
+    # to
+    # $DC_ROOT/KallistiOS
+    # set -i -e 's/\/usr\/local\/dc\/kos\/kos/'"$DC_ROOT"'\/KallistiOS/g' Makefile
+    # END FUTURE
     make patch
     popd
 }
