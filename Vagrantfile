@@ -1,6 +1,9 @@
-Vagrant::Config.run do |config|
-  config.vm.box_url = "http://files.vagrantup.com/precise32.box"
-  config.vm.box = "precise32"
-
-  config.vm.share_folder "kos", "/vagrant", "."
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/trusty64"  # 14.04
+  config.vm.synced_folder ".", "/vagrant"
+  config.vm.provider "virtualbox" do |v|
+      v.name = "KosVM"
+      v.memory = 1024
+      v.cpus = 2
+    end
 end
