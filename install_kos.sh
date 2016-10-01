@@ -5,9 +5,10 @@
 # This script represents a machine where KOS is built.
 
 set -e
+set -o xtrace
 
 export DC_ROOT=~/Tools/dreamcast
-export DC_TOOLCHAIN_ROOT=$DC_ROOT/KallistiOS/utils/dc-chain
+export DC_TOOLCHAIN_ROOT=$DC_ROOT/kallistios/utils/dc-chain
 
 
 function pkg_install() {
@@ -20,7 +21,7 @@ function install_gcc_prerequisites() {
     # Thanks to kenws on #dreamcastdev for providing this list.
     # Not sure if libjpeg62-dev and libpng-dev are correct- they're recent
     # additions since jpeg and png headers and dev libraries are now required.
-    pkg_install gcc-4.7 make bison flex   \
+    pkg_install build-essential gcc-4.7 make bison flex   \
          libelf-dev texinfo latex2html git wget sed lyx \
          libjpeg62-dev libpng-dev
 }
@@ -28,8 +29,8 @@ function install_gcc_prerequisites() {
 function download_kos_source() {
     mkdir -p $DC_ROOT
     pushd $DC_ROOT
-    git clone git://cadcdev.git.sourceforge.net/gitroot/cadcdev/KallistiOS
-    git clone --recursive git://cadcdev.git.sourceforge.net/gitroot/cadcdev/kos-ports kos-ports
+    git clone git://git.code.sf.net/p/cadcdev/kallistios
+    git clone --recursive git://git.code.sf.net/p/cadcdev/kos-ports
     popd
 
     # FUTURE
@@ -101,8 +102,8 @@ function prepare_gcc_source() {
     # Have to change
     #kos_base=/usr/local/dc/kos/kos
     # to
-    # $DC_ROOT/KallistiOS
-    # set -i -e 's/\/usr\/local\/dc\/kos\/kos/'"$DC_ROOT"'\/KallistiOS/g' Makefile
+    # $DC_ROOT/kallistios
+    # set -i -e 's/\/usr\/local\/dc\/kos\/kos/'"$DC_ROOT"'\/kallistios/g' Makefile
     # END FUTURE
     make patch
     popd
@@ -127,12 +128,12 @@ function build_arm_tools() {
 
 function create_environ_sh_script() {
     echo "
-# KallistiOS environment variable settings
+# kallistios environment variable settings
 export KOS_ARCH='dreamcast'
 
 export KOS_SUBARCH='pristine'
 
-export KOS_BASE='$DC_ROOT/KallistiOS'
+export KOS_BASE='$DC_ROOT/kallistios'
 " >  $DC_ROOT/environ.sh
     echo '
 # Make utility
@@ -167,14 +168,29 @@ export KOS_CFLAGS="-O2 -fomit-frame-pointer"
 }
 
 function build_kos() {
-    pushd $DC_ROOT/KallistiOS
+    pushd $DC_ROOT/kallistios
     make
     popd
 }
 
 function build_kos_ports() {
     pushd $DC_ROOT/kos-ports
-    make
+
+    export KOS_PORTS=$DC_ROOT/kos-ports
+    for f in *; do
+        if [[ -d "$f" && ! -L "$f" ]]; then
+            echo $f
+            if [[ "$f" == "opus" || "$f" == "opusfile" || "$f" == "scripts" || "$f" == "utils" ]]; then
+                echo "Skipping opus"
+            else
+                echo "Buidling $f".
+                pushd "$f"
+                make
+                popd
+            fi
+        fi
+    done
+
     popd
 }
 
@@ -226,6 +242,7 @@ function cmd_install() {
     create_environ_sh_script
     source $DC_ROOT/environ.sh
     build_kos
+    source "${DC_ROOT}/environ.sh"
     build_kos_ports
     build_dc_tool
 }
