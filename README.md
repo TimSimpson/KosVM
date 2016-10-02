@@ -37,7 +37,8 @@ Inside the VM, run "/vagrant/install_kos.sh".
 ## Afterwards
 
 ```bash
+    % cp ~/Tools/dreamcast/kallistios/doc/environ.sh.sample ../environ.sh
     $ source ~/Tools/dreamcast/environ.sh
-    $ cd ~/Tools/dreamcast/KallistiOS/examples/dreamcast/pvr/pvr_mark_strips_direct
+    $ cd ~/Tools/dreamcast/KallistiOS/examples/dreamcast/pvr/pvrmark_strips_direct
     $ make
 ```
